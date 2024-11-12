@@ -7,12 +7,18 @@ const PORT = 3000;
 app.get('/api/articles/:name', async (req, res) => {
   const { name } = req.params;
 
-  const client = new MongoClient('mongodb://127.0.0.1:27017');
+  const client = new MongoClient('mongodb://localhost:27017');
   await client.connect();
 
   const db = client.db('react-blog-db');
 
   const article = await db.collection('articles').findOne({ name });
+
+  if (article) {
+    res.json(article);
+  } else {
+    res.sendStatus(404).send('Not working !!! Re-DO !');
+  }
 
   res.json(article);
 });
